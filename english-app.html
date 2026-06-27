@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Learning Hub - Learn English Online</title>
+<style>
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', Arial, sans-serif; 
+  }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { 
+    max-width: 1200px; 
+    margin: auto; 
+  }
+  header {
+    text-align: center;
+    color: white;
+    padding: 30px 0;
+  }
+  header h1 { 
+    font-size: 2.8em; 
+    margin-bottom: 10px; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+  header p { 
+    font-size: 1.2em; 
+    opacity: 0.95; 
+  }
+  
+  .search-box {
+    max-width: 500px;
+    margin: 20px auto;
+    display: flex;
+    gap: 10px;
+  }
+  .search-box input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    outline: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .tab {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 25px;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.3);
+    font-size: 1em;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .tab.active, .tab:hover {
+    background: white;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #667eea, #764ba2);
+  }
+  .card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+  .card h3 { 
+    color: #333; 
+    margin-bottom: 10px; 
+    font-size: 1.3em;
+  }
+  .card p { 
+    color: #666; 
+    margin-bottom: 15px; 
+    font-size: 0.95em; 
+    line-height: 1.5;
+  }
+  .card a {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .card a:hover { 
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  }
+  .icon { 
+    font-size: 2.5em; 
+    margin-bottom: 10px; 
+  }
+  .badge {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #667eea;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    color: white;
+    padding: 30px 20px;
+    margin-top: 40px;
+    font-size: 0.95em;
+  }
+  .no-results {
+    text-align: center;
+    color: white;
+    font-size: 1.3em;
+    padding: 50px;
+    display: none;
+  }
+  
+  @media (max-width: 600px) {
+    header h1 { font-size: 2em; }
+    .tab { padding: 8px 15px; font-size: 0.9em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌍 English Learning Hub</h1>
+    <p>Your Gateway to Mastering English Online</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Search resources..." onkeyup="searchResources()">
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="filterCategory('all', this)">🌟 All</button>
+    <button class="tab" onclick="filterCategory('grammar', this)">📘 Grammar</button>
+    <button class="tab" onclick="filterCategory('vocab', this)">📚 Vocabulary</button>
+    <button class="tab" onclick="filterCategory('speak', this)">🗣️ Speaking</button>
+    <button class="tab" onclick="filterCategory('listen', this)">🎧 Listening</button>
+    <button class="tab" onclick="filterCategory('video', this)">🎬 Videos</button>
+    <button class="tab" onclick="filterCategory('test', this)">📝 Tests</button>
+    <button class="tab" onclick="filterCategory('kids', this)">👶 For Kids</button>
+  </div>
+
+  <div class="grid" id="resourceGrid"></div>
+  <div class="no-results" id="noResults">😢 No resources found. Try another keyword!</div>
+</div>
+
+<footer>
+  <p>© 2025 English Learning Hub | Made with ❤️ for English Learners</p>
+  <p style="margin-top: 10px; opacity: 0.8;">Start your journey today! 🚀</p>
+</footer>
+
+<script>
+const resources = [
+  // Grammar
+  { cat: 'grammar', icon: '📘', title: 'BBC Learning English', desc: 'Learn grammar from the famous BBC with free lessons for all levels.', url: 'https://www.bbc.co.uk/learningenglish', level: 'All Levels' },
+  { cat: 'grammar', icon: '📗', title: 'British Council', desc: 'Comprehensive grammar lessons from beginner to advanced.', url: 'https://learnenglish.britishcouncil.org/grammar', level: 'All Levels' },
+  { cat: 'grammar', icon: '📕', title: 'Perfect English Grammar', desc: 'Practice grammar with exercises and detailed explanations.', url: 'https://www.perfect-english-grammar.com/', level: 'Intermediate' },
+  { cat: 'grammar', icon: '🎯', title: 'Grammarly', desc: 'AI-powered grammar checker for writing improvement.', url: 'https://www.grammarly.com', level: 'All Levels' },
+  
+  // Vocabulary
+  { cat: 'vocab', icon: '📚', title: 'Quizlet', desc: 'Learn new words using interactive flashcards.', url: 'https://quizlet.com', level: 'All Levels' },
+  { cat: 'vocab', icon: '🎴', title: 'Memrise', desc: 'Learn vocabulary through fun games and videos.', url: 'https://www.memrise.com', level: 'Beginner' },
+  { cat: 'vocab', icon: '📖', title: 'Vocabulary.com', desc: 'Learn new words every day with smart adaptive learning.', url: 'https://www.vocabulary.com', level: 'Intermediate' },
+  { cat: 'vocab', icon: '🌟', title: 'Duolingo', desc: 'Learn languages through fun gamified lessons.', url: 'https://www.duolingo.com', level: 'Beginner' },
+  
+  // Speaking
+  { cat: 'speak', icon: '🗣️', title: 'Cambly', desc: 'Practice speaking with native English tutors anytime.', url: 'https://www.cambly.com', level: 'All Levels' },
+  { cat: 'speak', icon: '🎤', title: 'ELSA Speak', desc: 'AI-powered pronunciation coach to improve accent.', url: 'https://elsaspeak.com', level: 'All Levels' },
+  { cat: 'speak', icon: '💬', title: 'Tandem', desc: 'Exchange languages with native speakers worldwide.', url: 'https://www.tandem.net', level: 'All Levels' },
+  { cat: 'speak', icon: '👥', title: 'HelloTalk', desc: 'Chat and call with native English speakers.', url: 'https://www.hellotalk.com', level: 'All Levels' },
+  
+  // Listening
+  { cat: 'listen', icon: '🎧', title: 'ESL Pod', desc: 'Improve listening with daily English podcasts.', url: 'https://www.eslpod.com', level: 'Intermediate' },
+  { cat: 'listen', icon: '📻', title: 'VOA Learning English', desc: 'News and stories in slow, clear English.', url: 'https://learningenglish.voanews.com', level: 'Beginner' },
+  { cat: 'listen', icon: '🎙️', title: 'Luke\'s English Podcast', desc: 'Fun and engaging English podcasts for learners.', url: 'https://teacherluke.co.uk', level: 'Intermediate' },
+  
+  // Videos
+  { cat: 'video', icon: '🎬', title: 'EngVid', desc: 'Free English video lessons by experienced teachers.', url: 'https://www.engvid.com', level: 'All Levels' },
+  { cat: 'video', icon: '📺', title: 'TED-Ed', desc: 'Educational videos to learn English and knowledge.', url: 'https://ed.ted.com', level: 'Advanced' },
+  { cat: 'video', icon: '🎥', title: 'Learn English with TV', desc: 'Learn from movies and popular TV series.', url: 'https://www.youtube.com/c/LearnEnglishWithTVSeries', level: 'Intermediate' },
+  { cat: 'video', icon: '🎞️', title: 'mmmEnglish', desc: 'Clear pronunciation and speaking lessons on YouTube.', url: 'https://www.youtube.com/c/mmmEnglish', level: 'Intermediate' },
+  
+  // Tests
+  { cat: 'test', icon: '✍️', title: 'Duolingo English Test', desc: 'Test your English level - accepted worldwide.', url: 'https://englishtest.duolingo.com', level: 'All Levels' },
+  { cat: 'test', icon: '📝', title: 'EF SET Test', desc: 'Free 50-minute standardized English test.', url: 'https://www.efset.org', level: 'All Levels' },
+  { cat: 'test', icon: '🏆', title: 'Cambridge Test', desc: 'Check your level from A1 to C2 (CEFR).', url: 'https://www.cambridgeenglish.org/test-your-english/', level: 'All Levels' },
+  { cat: 'test', icon: '📊', title: 'IELTS Practice', desc: 'Free practice tests for IELTS exam preparation.', url: 'https://www.ielts.org/for-test-takers/sample-test-questions', level: 'Advanced' },
+  
+  // For Kids
+  { cat: 'kids', icon: '👶', title: 'British Council Kids', desc: 'Fun English learning games and stories for children.', url: 'https://learnenglishkids.britishcouncil.org', level: 'Kids' },
+  { cat: 'kids', icon: '🎨', title: 'Starfall', desc: 'Reading and phonics for young learners.', url: 'https://www.starfall.com', level: 'Kids' },
+  { cat: 'kids', icon: '🐻', title: 'ABCmouse', desc: 'Complete learning program for kids ages 2-8.', url: 'https://www.abcmouse.com', level: 'Kids' },
+];
+
+let currentCategory = 'all';
+
+function renderResources(filtered) {
+  const grid = document.getElementById('resourceGrid');
+  const noResults = document.getElementById('noResults');
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+  
+  noResults.style.display = 'none';
+  grid.innerHTML = filtered.map(r => `
+    <div class="card">
+      <div class="icon">${r.icon}</div>
+      <span class="badge">${r.level}</span>
+      <h3>${r.title}</h3>
+      <p>${r.desc}</p>
+      <a href="${r.url}" target="_blank" rel="noopener">Start Learning →</a>
+    </div>
+  `).join('');
+}
+
+function filterCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function searchResources() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = resources;
+  
+  if (currentCategory !== 'all') {
+    filtered = filtered.filter(r => r.cat === currentCategory);
+  }
+  
+  if (search) {
+    filtered = filtered.filter(r => 
+      r.title.toLowerCase().includes(search) || 
+      r.desc.toLowerCase().includes(search)
+    );
+  }
+  
+  renderResources(filtered);
+}
+
+// Initial render
+renderResources(resources);
+</script>
+</body>
+</html>
